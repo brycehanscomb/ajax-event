@@ -1,0 +1,22 @@
+{
+  "name": "ajax-event",
+  "version": "1.0.0",
+  "description": "Make building GUIs that rely on AJAX resources more bearable",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brycehanscomb/ajax-event.git"
+  },
+  "author": "Bryce Hanscomb",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brycehanscomb/ajax-event/issues"
+  },
+  "homepage": "https://github.com/brycehanscomb/ajax-event#readme",
+  "dependencies": {
+    "is-it-set": "^1.0.0"
+  }
+}
