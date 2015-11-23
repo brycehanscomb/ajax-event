@@ -1,6 +1,6 @@
 {
   "name": "ajax-event",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Make building GUIs that rely on AJAX resources more bearable",
   "main": "index.js",
   "scripts": {
