@@ -6,6 +6,12 @@
     "type": "git",
     "url": "git+https://github.com/brycehanscomb/ajax-event.git"
   },
+  "keywords": [
+    "ajax",
+    "async",
+    "MVC",
+    "view layer"
+  ],
   "author": {
     "name": "Bryce Hanscomb",
     "email": "bryce@brycehanscomb.com",
