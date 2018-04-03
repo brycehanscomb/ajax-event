@@ -13,7 +13,7 @@ export enum AjaxEventStatus {
 
 class AjaxEvent {
     public status : AjaxEventStatus = AjaxEventStatus.Ready;
-    public error : Error | null = DEFAULT_ERROR;
+    public error : Error | string | null = DEFAULT_ERROR;
     public message : string = DEFAULT_MESSAGE;
     public data : any = DEFAULT_DATA;
 
@@ -43,7 +43,7 @@ class AjaxEvent {
         return this;
     }
 
-    reject(error : Error, message : string = DEFAULT_MESSAGE) : AjaxEvent {
+    reject(error : Error | string = '', message : string = DEFAULT_MESSAGE) : AjaxEvent {
         this.status = AjaxEventStatus.Error;
         this.error = error;
         this.message = message;
