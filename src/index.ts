@@ -17,20 +17,22 @@ class AjaxEvent {
     public message : string = DEFAULT_MESSAGE;
     public data : any = DEFAULT_DATA;
 
-    private resetTo(status : AjaxEventStatus) : void {
+    private resetTo(status : AjaxEventStatus, shouldClearData : boolean) : void {
         this.status = status;
         this.error = DEFAULT_ERROR;
         this.message = DEFAULT_MESSAGE;
-        this.data = DEFAULT_DATA;
+        if (shouldClearData) {
+            this.data = DEFAULT_DATA;
+        }
     }
 
     resetToReady() : AjaxEvent {
-        this.resetTo(AjaxEventStatus.Ready);
+        this.resetTo(AjaxEventStatus.Ready, true);
         return this;
     }
 
     resetToExecuting(): AjaxEvent {
-        this.resetTo(AjaxEventStatus.Executing);
+        this.resetTo(AjaxEventStatus.Executing, false);
         return this;
     }
 

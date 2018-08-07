@@ -170,3 +170,10 @@ yarn test
 ## License
 
 Released under the MIT license.
+
+## What's New
+
+### v3.0.0
+
+The `data` will no longer be lost when calling `resetToExecuting()`, it will persist
+until some other command is called.

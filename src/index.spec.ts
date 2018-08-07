@@ -107,10 +107,12 @@ describe('AjaxEvent', () => {
             // create an instance
             const instance = new AjaxEvent();
 
+            const theData = Math.random();
+
             // do some wacky stuff to it
             instance.message = String(Math.random());
             instance.status = AjaxEventStatus.Success;
-            instance.data = Math.random();
+            instance.data = theData
             instance.error = new Error(String(Math.random()));
 
             // call the method
@@ -140,11 +142,11 @@ describe('AjaxEvent', () => {
                 );
             });
 
-            it('should clear the data', () => {
+            it('should not clear the data', () => {
                 expect(
                     instance.data
                 ).to.equal(
-                    undefined
+                    theData
                 );
             });
 
