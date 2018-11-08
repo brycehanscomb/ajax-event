@@ -27,10 +27,10 @@ Imagine if your views looked like this (using Angular for example):
 Here's the code that could make that happen:
 
 ```typescript
-var fetchAccountEvent = new AjaxEvent<IAccountObject>();
+let fetchAccountEvent = new AjaxEvent<IAccountObject>();
 
 // Set the internal state to 'executing' while the request is pending
-fetchAccountEvent.resetToExecuting();
+fetchAccountEvent = fetchAccountEvent.resetToExecuting();
 
 $.ajax({
     url: 'yourapi.com/account',
@@ -38,12 +38,12 @@ $.ajax({
     success(response) {
         // Everything went ok, 
         // store a success message and any associated data (ie: the payload)
-        fetchAccount.resolve(response.account_object, 'The account was fetched successfully');
+        fetchAccountEvent = fetchAccount.resolve(response.account_object, 'The account was fetched successfully');
     },
     error(err) {
         // Something went wrong, 
         // store an error message and associated error data
-        fetchAccountEvent.reject(err, 'There was an error! Error code: ' + err.error_code);
+        fetchAccountEvent = fetchAccountEvent.reject(err, 'There was an error! Error code: ' + err.error_code);
     }
 });	
 ```
@@ -89,12 +89,12 @@ import AjaxEvent from 'ajax-event';
 The simplest example just uses `resolve()` and `reject()` to set the `AjaxEvent`'s internal `status`:
 
 ```js
-var someEvent = new AjaxEvent();
+let someEvent = new AjaxEvent();
 
 // Perform an AJAX request (example with Promises)
 getSomeData
-    .then(() => someEvent.resolve()) // Everything went ok
-    .catch(() => someEvent.reject()) // Something went wrong
+    .then(() => someEvent = someEvent.resolve()) // Everything went ok
+    .catch(() => someEvent = someEvent.reject()) // Something went wrong
 ```
 
 This will allow you to use `AjaxEvent` in your view to show how things are going:
@@ -112,26 +112,24 @@ This will allow you to use `AjaxEvent` in your view to show how things are going
 
 #### Level 2: Standard Usage
 
-The `AjaxEvent` is also the perfect place to store your response messages and payload data. You can 
-also re-use the instances multiple times.
+The `AjaxEvent` is also the perfect place to store your response messages and payload data.
 
 ```js
-// Create a re-usable AjaxEvent instance
-var someEvent = new AjaxEvent();
+let someEvent = new AjaxEvent();
 
 function refreshLatestData() {
     // Clear any existing data and messages, and set the internal state to 'executing'
-    someEvent.resetToExecuting();
+    someEvent = someEvent.resetToExecuting();
     
     // Perform an AJAX request (example with Promises)
     getSomeData.then(function(response) {
         // Everything went ok, store any associated data (ie: the payload)
         // and a success message
-        someEvent.resolve(response.data, 'Request successful!');
+        someEvent = someEvent.resolve(response.data, 'Request successful!');
     }).catch(function(response) {
         // Something went wrong, store associated error data
         // and an error message
-        someEvent.reject(response.error, 'Something went wrong!');
+        someEvent = someEvent.reject(response.error, 'Something went wrong!');
     });
 }
 
