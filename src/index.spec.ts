@@ -621,7 +621,7 @@ describe('AjaxEvent', () => {
             });
 
             it('should return true when there is data set', () => {
-                const instance = new AjaxEvent();
+                const instance = new AjaxEvent<string>();
                 instance.resolve('Hello!');
 
                 expect(

@@ -11,11 +11,11 @@ export enum AjaxEventStatus {
     Success = 'SUCCESS'
 }
 
-class AjaxEvent {
+class AjaxEvent<DataT = any> {
     public status : AjaxEventStatus = AjaxEventStatus.Ready;
     public error : Error | string | null = DEFAULT_ERROR;
     public message : string = DEFAULT_MESSAGE;
-    public data : any = DEFAULT_DATA;
+    public data : DataT | undefined = DEFAULT_DATA;
 
     private resetTo(status : AjaxEventStatus, shouldClearData : boolean) : void {
         this.status = status;
@@ -26,17 +26,17 @@ class AjaxEvent {
         }
     }
 
-    resetToReady() : AjaxEvent {
+    resetToReady() : AjaxEvent<DataT> {
         this.resetTo(AjaxEventStatus.Ready, true);
         return this;
     }
 
-    resetToExecuting(): AjaxEvent {
+    resetToExecuting(): AjaxEvent<DataT> {
         this.resetTo(AjaxEventStatus.Executing, false);
         return this;
     }
 
-    resolve(data : any = DEFAULT_DATA, message : string = DEFAULT_MESSAGE) : AjaxEvent {
+    resolve(data : DataT | undefined = DEFAULT_DATA, message : string = DEFAULT_MESSAGE) : AjaxEvent<DataT> {
         this.status = AjaxEventStatus.Success;
         this.error = null;
         this.message = message;
@@ -45,7 +45,7 @@ class AjaxEvent {
         return this;
     }
 
-    reject(error : Error | string = '', message : string = DEFAULT_MESSAGE) : AjaxEvent {
+    reject(error : Error | string = '', message : string = DEFAULT_MESSAGE) : AjaxEvent<DataT> {
         this.status = AjaxEventStatus.Error;
         this.error = error;
         this.message = message;
