@@ -1,6 +1,6 @@
 {
   "name": "ajax-event",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Makes it easier to build GUIs that rely on AJAX resources",
   "repository": {
     "type": "git",
