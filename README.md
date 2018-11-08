@@ -27,7 +27,7 @@ Imagine if your views looked like this (using Angular for example):
 Here's the code that could make that happen:
 
 ```typescript
-var fetchAccountEvent = new AjaxEvent();
+var fetchAccountEvent = new AjaxEvent<IAccountObject>();
 
 // Set the internal state to 'executing' while the request is pending
 fetchAccountEvent.resetToExecuting();
@@ -172,6 +172,14 @@ yarn test
 Released under the MIT license.
 
 ## What's New
+
+### v4.0.0
+
+- The instances are now immutable. Calling `resetToReady()` or `resolve()` etc.
+will now return a new instance instead of modifying the existing one.
+- Added optional generic type `new AjaxEvent<DataT>()` for TS IDE assistance
+when working with the `data` field, it will now have its shape known if `DataT`
+is provided during construction.
 
 ### v3.0.0
 

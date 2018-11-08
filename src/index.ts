@@ -11,47 +11,56 @@ export enum AjaxEventStatus {
     Success = 'SUCCESS'
 }
 
-class AjaxEvent {
+class AjaxEvent<DataT = any> {
     public status : AjaxEventStatus = AjaxEventStatus.Ready;
     public error : Error | string | null = DEFAULT_ERROR;
     public message : string = DEFAULT_MESSAGE;
-    public data : any = DEFAULT_DATA;
+    public data : DataT | undefined = DEFAULT_DATA;
 
-    private resetTo(status : AjaxEventStatus, shouldClearData : boolean) : void {
-        this.status = status;
-        this.error = DEFAULT_ERROR;
-        this.message = DEFAULT_MESSAGE;
+    private resetTo(status : AjaxEventStatus, shouldClearData : boolean) : AjaxEvent<DataT> {
+        const result = new AjaxEvent<DataT>();
+
+        result.status = status;
+        result.error = DEFAULT_ERROR;
+        result.message = DEFAULT_MESSAGE;
+
         if (shouldClearData) {
-            this.data = DEFAULT_DATA;
+            result.data = DEFAULT_DATA;
+        } else {
+            result.data = this.data;
         }
+
+        return result;
     }
 
-    resetToReady() : AjaxEvent {
-        this.resetTo(AjaxEventStatus.Ready, true);
-        return this;
+    resetToReady() : AjaxEvent<DataT> {
+        return this.resetTo(AjaxEventStatus.Ready, true);
     }
 
-    resetToExecuting(): AjaxEvent {
-        this.resetTo(AjaxEventStatus.Executing, false);
-        return this;
+    resetToExecuting(): AjaxEvent<DataT> {
+        return this.resetTo(AjaxEventStatus.Executing, false);
     }
 
-    resolve(data : any = DEFAULT_DATA, message : string = DEFAULT_MESSAGE) : AjaxEvent {
-        this.status = AjaxEventStatus.Success;
-        this.error = null;
-        this.message = message;
-        this.data = data;
+    resolve(data : DataT | undefined = DEFAULT_DATA, message : string = DEFAULT_MESSAGE) : AjaxEvent<DataT> {
+        const result = new AjaxEvent<DataT>();
 
-        return this;
+        result.status = AjaxEventStatus.Success;
+        result.error = null;
+        result.message = message;
+        result.data = data;
+
+        return result;
     }
 
-    reject(error : Error | string = '', message : string = DEFAULT_MESSAGE) : AjaxEvent {
-        this.status = AjaxEventStatus.Error;
-        this.error = error;
-        this.message = message;
-        this.data = undefined;
+    reject(error : Error | string = '', message : string = DEFAULT_MESSAGE) : AjaxEvent<DataT> {
+        const result = new AjaxEvent<DataT>();
 
-        return this;
+        result.status = AjaxEventStatus.Error;
+        result.error = error;
+        result.message = message;
+        result.data = undefined;
+
+        return result;
     }
 
     isSuccessful() : boolean {

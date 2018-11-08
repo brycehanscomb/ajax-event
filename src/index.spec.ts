@@ -62,7 +62,7 @@ describe('AjaxEvent', () => {
 
             it('should change the status back to ready', () => {
                 expect(
-                    instance.status
+                    returnVal.status
                 ).to.equal(
                     AjaxEventStatus.Ready
                 );
@@ -70,32 +70,32 @@ describe('AjaxEvent', () => {
 
             it('should clear the error', () => {
                 expect(
-                    instance.error
+                    returnVal.error
                 ).to.equal(
-                    null
+                    DEFAULT_ERROR
                 );
             });
 
             it('should clear the message', () => {
                 expect(
-                    instance.message
+                    returnVal.message
                 ).to.equal(
-                    ''
+                    DEFAULT_MESSAGE
                 );
             });
 
             it('should clear the data', () => {
                 expect(
-                    instance.data
+                    returnVal.data
                 ).to.equal(
-                    undefined
+                    DEFAULT_DATA
                 );
             });
 
-            it('should return the same instance', () => {
+            it('should return a different instance', () => {
                 expect(
                     returnVal
-                ).to.equal(
+                ).to.not.equal(
                     instance
                 );
             });
@@ -112,7 +112,7 @@ describe('AjaxEvent', () => {
             // do some wacky stuff to it
             instance.message = String(Math.random());
             instance.status = AjaxEventStatus.Success;
-            instance.data = theData
+            instance.data = theData;
             instance.error = new Error(String(Math.random()));
 
             // call the method
@@ -120,7 +120,7 @@ describe('AjaxEvent', () => {
 
             it('should change the status to executing', () => {
                 expect(
-                    instance.status
+                    returnVal.status
                 ).to.equal(
                     AjaxEventStatus.Executing
                 );
@@ -128,32 +128,32 @@ describe('AjaxEvent', () => {
 
             it('should clear the error', () => {
                 expect(
-                    instance.error
+                    returnVal.error
                 ).to.equal(
-                    null
+                    DEFAULT_ERROR
                 );
             });
 
             it('should clear the message', () => {
                 expect(
-                    instance.message
+                    returnVal.message
                 ).to.equal(
-                    ''
+                    DEFAULT_MESSAGE
                 );
             });
 
             it('should not clear the data', () => {
                 expect(
-                    instance.data
+                    returnVal.data
                 ).to.equal(
                     theData
                 );
             });
 
-            it('should return the same instance', () => {
+            it('should return a new instance', () => {
                 expect(
                     returnVal
-                ).to.equal(
+                ).to.not.equal(
                     instance
                 );
             });
@@ -163,7 +163,8 @@ describe('AjaxEvent', () => {
         describe('#resolve', () => {
 
             // create an instance
-            const instance = new AjaxEvent();
+            let instance = new AjaxEvent();
+            const originalInstance = instance;
 
             // do some wacky stuff to it
             instance.message = String(Math.random());
@@ -172,7 +173,7 @@ describe('AjaxEvent', () => {
             instance.error = new Error(String(Math.random()));
 
             // call the method
-            const returnVal = instance.resolve();
+            instance = instance.resolve();
 
             it('should change the status to success', () => {
                 expect(
@@ -191,7 +192,7 @@ describe('AjaxEvent', () => {
             });
 
             it('should clear the message if no message passed', () => {
-                instance.resolve();
+                instance = instance.resolve();
 
                 expect(
                     instance.message
@@ -202,7 +203,7 @@ describe('AjaxEvent', () => {
 
             it('should store the message if a message is passed', () => {
                 const message = String(Math.random());
-                instance.resolve(undefined, message);
+                instance = instance.resolve(undefined, message);
 
                 expect(
                     instance.message
@@ -212,7 +213,7 @@ describe('AjaxEvent', () => {
             });
 
             it('should clear the data if no data passed', () => {
-                instance.resolve();
+                instance = instance.resolve();
 
                 expect(
                     instance.data
@@ -223,7 +224,7 @@ describe('AjaxEvent', () => {
 
             it('should store the data if some data is passed', () => {
                 const data = String(Math.random());
-                instance.resolve(data);
+                instance = instance.resolve(data);
 
                 expect(
                     instance.data
@@ -232,10 +233,10 @@ describe('AjaxEvent', () => {
                 );
             });
 
-            it('should return the same instance', () => {
+            it('should return a new instance', () => {
                 expect(
-                    returnVal
-                ).to.equal(
+                    originalInstance
+                ).to.not.equal(
                     instance
                 );
             });
@@ -245,7 +246,8 @@ describe('AjaxEvent', () => {
         describe('#reject', () => {
 
             // create an instance
-            const instance = new AjaxEvent();
+            let instance = new AjaxEvent();
+            const originalInstance = instance;
 
             // do some wacky stuff to it
             instance.message = String(Math.random());
@@ -255,7 +257,7 @@ describe('AjaxEvent', () => {
 
             // call the method
             const theError = new Error('What up');
-            const returnVal = instance.reject(theError);
+            instance = instance.reject(theError);
 
             it('should change the status to error', () => {
                 expect(
@@ -274,7 +276,7 @@ describe('AjaxEvent', () => {
             });
 
             it('should clear the message if no message passed', () => {
-                instance.reject(theError);
+                instance = instance.reject(theError);
 
                 expect(
                     instance.message
@@ -285,7 +287,7 @@ describe('AjaxEvent', () => {
 
             it('should store the message if a message is passed', () => {
                 const message = String(Math.random());
-                instance.reject(theError, message);
+                instance = instance.reject(theError, message);
 
                 expect(
                     instance.message
@@ -295,7 +297,7 @@ describe('AjaxEvent', () => {
             });
 
             it('should clear the data', () => {
-                instance.reject(theError);
+                instance = instance.reject(theError);
 
                 expect(
                     instance.data
@@ -304,11 +306,11 @@ describe('AjaxEvent', () => {
                 );
             });
 
-            it('should return the same instance', () => {
+            it('should return a new instance', () => {
                 expect(
-                    returnVal
-                ).to.equal(
                     instance
+                ).to.not.equal(
+                    originalInstance
                 );
             });
 
@@ -321,8 +323,8 @@ describe('AjaxEvent', () => {
         describe('#isSuccessful', () => {
 
             it('should return true when the instance has been resolved', () => {
-                const instance = new AjaxEvent();
-                instance.resolve();
+                let instance = new AjaxEvent();
+                instance = instance.resolve();
 
                 expect(
                     instance.isSuccessful()
@@ -388,8 +390,8 @@ describe('AjaxEvent', () => {
             });
 
             it('should return true if the instance is currently executing', () => {
-                const instance = new AjaxEvent();
-                instance.resetToExecuting();
+                let instance = new AjaxEvent();
+                instance = instance.resetToExecuting();
 
                 expect(
                     instance.isExecuting()
@@ -434,8 +436,8 @@ describe('AjaxEvent', () => {
             });
 
             it('should return false if the instance is currently executing', () => {
-                const instance = new AjaxEvent();
-                instance.resetToExecuting();
+                let instance = new AjaxEvent();
+                instance = instance.resetToExecuting();
 
                 expect(
                     instance.isNotExecuting()
@@ -459,8 +461,8 @@ describe('AjaxEvent', () => {
         describe('#isReady', () => {
 
             it('should return false when the instance has been resolved', () => {
-                const instance = new AjaxEvent();
-                instance.resolve();
+                let instance = new AjaxEvent();
+                instance = instance.resolve();
 
                 expect(
                     instance.isReady()
@@ -480,8 +482,8 @@ describe('AjaxEvent', () => {
             });
 
             it('should return false if the instance is currently executing', () => {
-                const instance = new AjaxEvent();
-                instance.resetToExecuting();
+                let instance = new AjaxEvent();
+                instance = instance.resetToExecuting();
 
                 expect(
                     instance.isReady()
@@ -491,8 +493,8 @@ describe('AjaxEvent', () => {
             });
 
             it('should return false if the instance has errored', () => {
-                const instance = new AjaxEvent();
-                instance.reject(new Error('oh no!'));
+                let instance = new AjaxEvent();
+                instance = instance.reject(new Error('oh no!'));
 
                 expect(
                     instance.isReady()
@@ -505,8 +507,8 @@ describe('AjaxEvent', () => {
         describe('#isNotReady', () => {
 
             it('should return true when the instance has been resolved', () => {
-                const instance = new AjaxEvent();
-                instance.resolve();
+                let instance = new AjaxEvent();
+                instance = instance.resolve();
 
                 expect(
                     instance.isNotReady()
@@ -526,8 +528,8 @@ describe('AjaxEvent', () => {
             });
 
             it('should return true if the instance is currently executing', () => {
-                const instance = new AjaxEvent();
-                instance.resetToExecuting();
+                let instance = new AjaxEvent();
+                instance = instance.resetToExecuting();
 
                 expect(
                     instance.isNotReady()
@@ -537,8 +539,8 @@ describe('AjaxEvent', () => {
             });
 
             it('should return true if the instance has errored', () => {
-                const instance = new AjaxEvent();
-                instance.reject(new Error('oh no!'));
+                let instance = new AjaxEvent();
+                instance = instance.reject(new Error('oh no!'));
 
                 expect(
                     instance.isNotReady()
@@ -578,8 +580,8 @@ describe('AjaxEvent', () => {
             });
 
             it('should return true when there is an error', () => {
-                const instance = new AjaxEvent();
-                instance.reject(new Error('What!'));
+                let instance = new AjaxEvent();
+                instance = instance.reject(new Error('What!'));
 
                 expect(
                     instance.hasError()
@@ -621,8 +623,8 @@ describe('AjaxEvent', () => {
             });
 
             it('should return true when there is data set', () => {
-                const instance = new AjaxEvent();
-                instance.resolve('Hello!');
+                let instance = new AjaxEvent<string>();
+                instance = instance.resolve('Hello!');
 
                 expect(
                     instance.hasData()
@@ -672,9 +674,8 @@ describe('AjaxEvent', () => {
             });
 
             it('should return true when there is data set', () => {
-                const instance = new AjaxEvent();
-
-                instance.resolve('Hello!', 'Some message');
+                let instance = new AjaxEvent();
+                instance = instance.resolve('Hello!', 'Some message');
 
                 expect(
                     instance.hasMessage()
@@ -682,7 +683,7 @@ describe('AjaxEvent', () => {
                     true
                 );
 
-                instance.reject(new Error('Oh no!'), 'Some message');
+                instance = instance.reject(new Error('Oh no!'), 'Some message');
 
                 expect(
                     instance.hasMessage()
