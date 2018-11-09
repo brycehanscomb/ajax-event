@@ -173,6 +173,12 @@ Released under the MIT license.
 
 ## What's New
 
+### v3.0.1
+
+Added optional generic type `new AjaxEvent<DataT>()` for TS IDE assistance
+when working with the `data` field, it will now have its shape known if `DataT`
+is provided during construction.
+
 ### v3.0.0
 
 The `data` will no longer be lost when calling `resetToExecuting()`, it will persist
